@@ -26,7 +26,7 @@ main{position:relative;isolation:isolate}
 @media(max-width:600px){.scroll-rail--left{left:7px}.scroll-rail--right{right:7px}.scroll-rail__node::after{width:5px}.scroll-rail__fill{box-shadow:0 0 5px rgb(139 232 255 / .45)}}
 
 /* Slim pointer-following scan slit replaces the large circular reveal. */
-.portrait{--scan-half-width:120px;--scan-half-height:4px;overflow:clip}
+.portrait{--scan-half-width:160px;--scan-half-height:20px;overflow:clip}
 .portrait::after{content:"";position:absolute;z-index:2;left:var(--mx);top:var(--my);width:calc(var(--scan-half-width) + var(--scan-half-width));height:calc(var(--scan-half-height) + var(--scan-half-height));transform:translate(-50%,-50%);border-top:1px solid rgb(139 232 255 / .75);border-bottom:1px solid rgb(139 232 255 / .4);box-shadow:0 0 8px rgb(139 232 255 / .25);pointer-events:none;opacity:0;transition:opacity .35s}
 .portrait.is-revealing:not(.is-full)::after{opacity:1}
-@media(max-width:600px){.portrait{--scan-half-width:80px;--scan-half-height:3px}}
+@media(max-width:600px){.portrait{--scan-half-width:110px;--scan-half-height:14px}}

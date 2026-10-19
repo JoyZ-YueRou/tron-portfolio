@@ -26,4 +26,4 @@ Two thin ice-blue rails flank the lower page, with markers aligned to About, Wor
 
 ## Slim scan reveal
 
-The former 360px-wide circle is replaced with a 240 × 8px horizontal reveal slit, reduced to 160 × 6px on mobile. Two fine cyan edges follow the pointer and frame the alternate portrait pixels inside the slit. Existing smooth tracking, shared portrait tilt, exit fade, touch scrolling, and reduced-motion behavior remain in place. The full-image toggle still reveals the entire alternate portrait and hides the scan edges.
+The former 360px-wide circle is replaced with a 320 × 40px horizontal reveal slit, reduced to 220 × 28px on mobile. Two fine cyan edges follow the pointer and frame the alternate portrait pixels inside the slit. Existing smooth tracking, shared portrait tilt, exit fade, touch scrolling, and reduced-motion behavior remain in place. The full-image toggle still reveals the entire alternate portrait and hides the scan edges.
