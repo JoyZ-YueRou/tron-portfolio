@@ -30,3 +30,6 @@ main{position:relative;isolation:isolate}
 .portrait::after{content:"";position:absolute;z-index:2;left:var(--mx);top:var(--my);width:calc(var(--scan-half-width) + var(--scan-half-width));height:calc(var(--scan-half-height) + var(--scan-half-height));transform:translate(-50%,-50%);border-top:1px solid rgb(139 232 255 / .75);border-bottom:1px solid rgb(139 232 255 / .4);box-shadow:0 0 8px rgb(139 232 255 / .25);pointer-events:none;opacity:0;transition:opacity .35s}
 .portrait.is-revealing:not(.is-full)::after{opacity:1}
 @media(max-width:600px){.portrait{--scan-half-width:110px;--scan-half-height:14px}}
+
+/* Signal-fault reveal: hard rectangular jumps, restrained monochrome cyan echoes. */
+.portrait::after{border:1px solid rgb(139 232 255 / var(--scan-edge-alpha,.65));box-shadow:var(--scan-echo,0px) 0 0 rgb(139 232 255 / .2),0 0 9px rgb(139 232 255 / .2);background:repeating-linear-gradient(to bottom,transparent 0 5px,rgb(139 232 255 / .055) 5px 6px)}

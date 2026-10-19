@@ -27,3 +27,7 @@ Two thin ice-blue rails flank the lower page, with markers aligned to About, Wor
 ## Slim scan reveal
 
 The former 360px-wide circle is replaced with a 320 × 40px horizontal reveal slit, reduced to 220 × 28px on mobile. Two fine cyan edges follow the pointer and frame the alternate portrait pixels inside the slit. Existing smooth tracking, shared portrait tilt, exit fade, touch scrolling, and reduced-motion behavior remain in place. The full-image toggle still reveals the entire alternate portrait and hides the scan edges.
+
+## Glitch rectangles
+
+While the pointer moves, the reveal jumps between randomly sized rectangles (220–420px wide and 24–130px tall on desktop; 140–260px by 18–80px on mobile). Size changes are throttled to irregular 220–440ms intervals, with faint scan lines and restrained cyan edge echoes. It stops changing when the pointer rests, leaves the hero, or the full-image toggle is on. Reduced motion keeps the default fixed rectangle and disables these glitches. No timers or extra animation loops run for the effect.

@@ -3,6 +3,24 @@ let ready=false,full=false,active=false,frame=0,targetX=0,targetY=0,x=0,y=0,angl
 const halo=document.querySelector('#halo');
 let tiltX=0,tiltY=0;
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
+let nextScanChange=0;
+function resetScan(){
+  for(const property of ['--scan-half-width','--scan-half-height','--scan-edge-alpha','--scan-echo'])portrait.style.removeProperty(property);
+  nextScanChange=0;
+}
+function varyScan(now=performance.now()){
+  if(reduced.matches||full||now<nextScanChange)return;
+  const mobile=window.innerWidth<=600;
+  const width=mobile?140+Math.random()*120:220+Math.random()*200;
+  const height=mobile?18+Math.random()*62:24+Math.random()*106;
+  // Discrete size jumps feel like a signal fault; pointer tracking remains smooth.
+  portrait.style.setProperty('--scan-half-width',`${Math.round(width/2)}px`);
+  portrait.style.setProperty('--scan-half-height',`${Math.round(height/2)}px`);
+  portrait.style.setProperty('--scan-edge-alpha',(.4+Math.random()*.4).toFixed(2));
+  portrait.style.setProperty('--scan-echo',`${Math.round(Math.random()*6-3)}px`);
+  nextScanChange=now+220+Math.random()*220;
+}
+
 Promise.all([...portrait.querySelectorAll('img')].map(img=>img.decode())).then(()=>{ready=true;toggle.disabled=false;toggle.textContent='Reveal alternate identity';status.textContent='Portrait ready. Move over the hero or use the reveal button.';}).catch(()=>{toggle.textContent='Alternate portrait unavailable';status.textContent='The alternate portrait could not load. The base portrait remains visible.';});
 function render(){
   frame=0;
@@ -18,12 +36,13 @@ function render(){
   if(!reduced.matches&&(moving||(active&&(Math.abs(targetX-x)>.1||Math.abs(targetY-y)>.1))))frame=requestAnimationFrame(render);
 }
 function schedule(){if(!frame)frame=requestAnimationFrame(render);}
-function track(event){if(!ready||event.target.closest('a,button,input,label'))return;const bounds=portrait.parentElement.getBoundingClientRect();targetX=event.clientX-bounds.left;targetY=event.clientY-bounds.top;if(!active){x=targetX;y=targetY;}angleY=clamp((targetX/bounds.width-.5)*6,-3,3);angleX=clamp((.5-targetY/bounds.height)*6,-3,3);active=true;portrait.classList.add('is-revealing');schedule();}
+function track(event){if(!ready||event.target.closest('a,button,input,label'))return;const bounds=portrait.parentElement.getBoundingClientRect();targetX=event.clientX-bounds.left;targetY=event.clientY-bounds.top;if(!active){x=targetX;y=targetY;}angleY=clamp((targetX/bounds.width-.5)*6,-3,3);angleX=clamp((.5-targetY/bounds.height)*6,-3,3);active=true;portrait.classList.add('is-revealing');varyScan();schedule();}
 hero.addEventListener('pointermove',e=>{if(e.pointerType!=='touch'||e.buttons)track(e);});hero.addEventListener('pointerdown',track,{passive:true});
 function leave(){active=false;portrait.classList.remove('is-revealing');schedule();}
 hero.addEventListener('pointerleave',leave);hero.addEventListener('pointercancel',leave);hero.addEventListener('pointerup',e=>{if(e.pointerType==='touch')leave();});
 // No pointer capture or preventDefault: vertical scrolling stays native.
-toggle.addEventListener('click',()=>{if(!ready)return;full=!full;portrait.classList.toggle('is-full',full);toggle.setAttribute('aria-pressed',String(full));toggle.textContent=full?'Return to original':'Reveal alternate identity';status.textContent=full?'Full alternate portrait shown.':'Original portrait shown. Pointer reveal enabled.';});reduced.addEventListener('change',()=>{if(reduced.matches){tiltX=0;tiltY=0;}schedule();});
+toggle.addEventListener('click',()=>{if(!ready)return;full=!full;resetScan();portrait.classList.toggle('is-full',full);toggle.setAttribute('aria-pressed',String(full));toggle.textContent=full?'Return to original':'Reveal alternate identity';status.textContent=full?'Full alternate portrait shown.':'Original portrait shown. Pointer reveal enabled.';});reduced.addEventListener('change',()=>{if(reduced.matches){tiltX=0;tiltY=0;resetScan();}schedule();});
+window.addEventListener('resize',resetScan,{passive:true});
 // A missing decorative asset must never block portrait controls.
 halo.decode().catch(()=>{halo.hidden=true;});
 const audio=document.querySelector('#soundtrack'),file=document.querySelector('#sound-file'),sound=document.querySelector('#sound-toggle'),audioStatus=document.querySelector('#audio-status');let audioURL;
