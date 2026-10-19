@@ -4,7 +4,7 @@ A responsive HTML, CSS, and JavaScript personal portfolio prototype. Open this f
 
 ## Portrait interaction
 
-Two aligned WebP portraits share one container, size, object-fit: contain, and center-bottom object-position. The base stays visible. The alternate layer uses clip-path: circle(180px at x y). Pointer coordinates are relative to the stable outer anchor, while requestAnimationFrame interpolates the mask position by 12% per frame. Both layers share a tilt clamped to ±3 degrees. Exiting fades the reveal; the keyboard-accessible button toggles the full alternate portrait.
+Two aligned WebP portraits share one container, size, object-fit: contain, and center-bottom object-position. The base stays visible. The alternate layer uses a narrow rectangular clip-path following x/y. Pointer coordinates are relative to the stable outer anchor, while requestAnimationFrame interpolates the mask position by 12% per frame. Both layers share a tilt clamped to ±3 degrees. Exiting fades the reveal; the keyboard-accessible button toggles the full alternate portrait.
 
 Both images decode before interaction is enabled. Failure leaves the base portrait and disables the toggle. Touch input does not prevent native scrolling. Reduced motion removes tilt, trailing, and transitions.
 
@@ -23,3 +23,7 @@ Assets were extracted using the built-in image generation tool. Prompts requeste
 ## Scroll lighting
 
 Two thin ice-blue rails flank the lower page, with markers aligned to About, Work, and Contact. Their illuminated length follows the viewport center as you scroll down or back up. Positions are measured from the actual section layout and recalculated on resize, page restoration, and font readiness. Passive scroll events schedule one animation frame per update. Decoration ignores pointer input and is hidden from screen readers; mobile rails sit inside the edges without covering text. No looping animation or scroll hijacking.
+
+## Slim scan reveal
+
+The former 360px-wide circle is replaced with a 240 × 8px horizontal reveal slit, reduced to 160 × 6px on mobile. Two fine cyan edges follow the pointer and frame the alternate portrait pixels inside the slit. Existing smooth tracking, shared portrait tilt, exit fade, touch scrolling, and reduced-motion behavior remain in place. The full-image toggle still reveals the entire alternate portrait and hides the scan edges.
