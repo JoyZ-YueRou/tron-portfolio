@@ -6,3 +6,21 @@
 @media(prefers-reduced-motion:reduce){.halo-anchor img{will-change:auto}}
 
 .halo-anchor img{mask-image:radial-gradient(circle closest-side,transparent 33%,#000 53%,#000 81%,transparent 100%)}
+
+/* Paired light trails align to the actual section positions, outside the text. */
+main{position:relative;isolation:isolate}
+.scroll-route{position:absolute;inset:0;pointer-events:none;z-index:3;--route-top:850px;--route-height:0px;--route-progress:0%;opacity:0}
+.scroll-route.is-ready{opacity:1}
+.scroll-rail{position:absolute;top:var(--route-top);height:var(--route-height);width:1px;background:rgb(139 232 255 / .12)}
+.scroll-rail--left{left:clamp(12px,2.2vw,32px)}
+.scroll-rail--right{right:clamp(12px,2.2vw,32px)}
+.scroll-rail::before,.scroll-rail::after{content:"";position:absolute;left:-3px;width:7px;height:1px;background:rgb(139 232 255 / .4)}
+.scroll-rail::before{top:0}.scroll-rail::after{bottom:0}
+.scroll-rail__fill{position:absolute;top:0;left:0;width:1px;height:var(--route-progress);background:var(--cyan);box-shadow:0 0 6px rgb(139 232 255 / .6),0 0 16px rgb(139 232 255 / .22)}
+.scroll-rail__fill::after{content:"";position:absolute;bottom:0;left:-1px;width:3px;height:30px;max-height:100%;background:linear-gradient(transparent,#eafaff);box-shadow:0 5px 12px rgb(139 232 255 / .5)}
+.scroll-rail__node{position:absolute;left:-2px;top:var(--node-top);width:5px;height:12px;transform:translateY(-50%);background:#030607;border:1px solid #425a63;transition:background .2s,box-shadow .2s,border-color .2s}
+.scroll-rail__node.is-passed{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 10px rgb(139 232 255 / .65)}
+.scroll-rail__node::after{content:"";position:absolute;top:4px;width:11px;height:1px;background:#425a63}
+.scroll-rail--left .scroll-rail__node::after{left:5px}.scroll-rail--right .scroll-rail__node::after{right:5px}
+.scroll-rail__node.is-passed::after{background:var(--cyan)}
+@media(max-width:600px){.scroll-rail--left{left:7px}.scroll-rail--right{right:7px}.scroll-rail__node::after{width:5px}.scroll-rail__fill{box-shadow:0 0 5px rgb(139 232 255 / .45)}}

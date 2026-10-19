@@ -29,3 +29,38 @@ halo.decode().catch(()=>{halo.hidden=true;});
 const audio=document.querySelector('#soundtrack'),file=document.querySelector('#sound-file'),sound=document.querySelector('#sound-toggle'),audioStatus=document.querySelector('#audio-status');let audioURL;
 file.addEventListener('change',()=>{const selected=file.files[0];if(!selected)return;audio.pause();if(audioURL)URL.revokeObjectURL(audioURL);audioURL=URL.createObjectURL(selected);audio.src=audioURL;sound.disabled=false;sound.textContent='PLAY SOUND';sound.setAttribute('aria-pressed','false');audioStatus.textContent=`Ready: ${selected.name}. Audio stays on your device.`;});
 sound.addEventListener('click',async()=>{if(audio.paused){try{await audio.play();sound.textContent='SOUND ON';sound.setAttribute('aria-pressed','true');}catch{audioStatus.textContent='Unable to play this file. Try another audio format.';}}else{audio.pause();sound.textContent='SOUND OFF';sound.setAttribute('aria-pressed','false');}});audio.addEventListener('error',()=>{sound.disabled=true;audioStatus.textContent='This audio file could not load. Choose another file.';});
+
+// Two document-space rails: fill follows the viewport; nodes follow real sections.
+const route=document.querySelector('.scroll-route');
+const routeSections=['about','work','contact'].map(id=>document.getElementById(id));
+const routeNodes=[...route.querySelectorAll('[data-section]')];
+let routeStart=0,routeHeight=1,routeFrame=0;
+const sectionPositions=new Map();
+function drawRoute(){
+  routeFrame=0;
+  const scanLine=window.scrollY+window.innerHeight*.55;
+  const progress=clamp((scanLine-routeStart)/routeHeight,0,1);
+  route.style.setProperty('--route-progress',`${progress*100}%`);
+  for(const node of routeNodes)node.classList.toggle('is-passed',scanLine>=sectionPositions.get(node.dataset.section));
+}
+function queueRoute(){if(!routeFrame)routeFrame=requestAnimationFrame(drawRoute);}
+function measureRoute(){
+  const mainTop=document.querySelector('main').getBoundingClientRect().top+window.scrollY;
+  routeStart=hero.getBoundingClientRect().bottom+window.scrollY-80;
+  const end=routeSections[2].getBoundingClientRect().bottom+window.scrollY-45;
+  routeHeight=Math.max(1,end-routeStart);
+  route.style.setProperty('--route-top',`${routeStart-mainTop}px`);
+  route.style.setProperty('--route-height',`${routeHeight}px`);
+  for(const section of routeSections){
+    const heading=section.querySelector('h2,h3')||section;
+    const y=heading.getBoundingClientRect().top+window.scrollY+12;
+    sectionPositions.set(section.id,y);
+  }
+  for(const node of routeNodes)node.style.setProperty('--node-top',`${sectionPositions.get(node.dataset.section)-routeStart}px`);
+  route.classList.add('is-ready');queueRoute();
+}
+window.addEventListener('scroll',queueRoute,{passive:true});
+window.addEventListener('resize',measureRoute,{passive:true});
+window.addEventListener('pageshow',measureRoute);
+if(document.fonts)document.fonts.ready.then(measureRoute);
+measureRoute();

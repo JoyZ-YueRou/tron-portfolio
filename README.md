@@ -19,3 +19,7 @@ Original portfolio branding inspired by cinematic cyber aesthetics; not an offic
 The cutout WebP assets preserve alpha; the original images are retained. Both portraits remain 1122 × 1402. The halo is a separate decorative image behind the shared portrait container; its transparent center and exterior let the page show through. A radial CSS mask feathers its glow. Mouse movement eases the portrait tilt to ±3° and halo tilt to ±12°, plus a slight in-plane rotation. Both settle to neutral on pointer exit. Reduced motion disables all tilt and trailing. The halo loading failure is independent of portrait readiness.
 
 Assets were extracted using the built-in image generation tool. Prompts requested removal of only the exterior black background, preserving the complete dark hair, visor, neck, shoulders, chest, original framing and coordinates. The halo prompt requested transparent center and exterior with the luminous white/blue ring preserved.
+
+## Scroll lighting
+
+Two thin ice-blue rails flank the lower page, with markers aligned to About, Work, and Contact. Their illuminated length follows the viewport center as you scroll down or back up. Positions are measured from the actual section layout and recalculated on resize, page restoration, and font readiness. Passive scroll events schedule one animation frame per update. Decoration ignores pointer input and is hidden from screen readers; mobile rails sit inside the edges without covering text. No looping animation or scroll hijacking.
